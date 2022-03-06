@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "855867019481",
+    "firebase_url": "https://final-year-project-98b18-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "final-year-project-98b18",
+    "storage_bucket": "final-year-project-98b18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:855867019481:android:f5479cbd94c1661f676ec8",
+        "android_client_info": {
+          "package_name": "com.example.assantendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "855867019481-6o3fjqp600e1lpeogcabuta6c0sgprs3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqeLUXFeHMw9gUEGZ1M-iBdEO6GNfU934"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "855867019481-6o3fjqp600e1lpeogcabuta6c0sgprs3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
