@@ -151,6 +151,7 @@ class _LoginState extends State<Login> {
                               color: Colors.blueAccent,
                               fontWeight: FontWeight.w300,
                               fontSize: 18,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ],
