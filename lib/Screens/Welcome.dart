@@ -1,4 +1,5 @@
 import 'package:assantendance/Screens/Login.dart';
+import 'package:assantendance/Screens/SignUp.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -59,7 +60,10 @@ class Welcome extends StatelessWidget {
                   // creating the signup button
                   SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => SignUp()));
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blueAccent,
                       elevation: 5.0,
