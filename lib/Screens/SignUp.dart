@@ -305,9 +305,12 @@ class _SignUpState extends State<SignUp> {
 
         final imageURL = await ref.getDownloadURL();
 
-        _databaseReference
-            .child(macAddress)
-            .set({"Name": name, "Semester": selectedValue, "URL": imageURL});
+        _databaseReference.child(macAddress).set({
+          "Name": name,
+          "Semester": selectedValue,
+          "URL": imageURL,
+          "UID": userCredential.user!.uid,
+        });
 
         Fluttertoast.showToast(
           msg: "You are Successfully Registered!",

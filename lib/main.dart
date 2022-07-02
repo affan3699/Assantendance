@@ -2,6 +2,7 @@ import 'package:assantendance/Screens/Dashboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:month_year_picker/month_year_picker.dart';
 
 import 'Screens/Login.dart';
 import 'Screens/Welcome.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
               "welcome_screen": (context) => Welcome(),
               "dashboard_screen": (context) => Dashboard(),
             },
+            localizationsDelegates: [MonthYearPickerLocalizations.delegate],
           );
         }
 

@@ -1,3 +1,6 @@
+import 'package:assantendance/Screens/MarkAttendance.dart';
+import 'package:assantendance/Screens/Profile.dart';
+import 'package:assantendance/Screens/ViewAttendance.dart';
 import 'package:assantendance/Screens/Welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +31,19 @@ class Dashboard extends StatelessWidget {
                   ],
                 ),
               ),
+              PopupMenuItem<int>(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.person,
+                      color: Colors.black,
+                    ),
+                    SizedBox(width: 8),
+                    Text("Profile"),
+                  ],
+                ),
+              ),
             ],
           )
         ],
@@ -39,12 +55,18 @@ class Dashboard extends StatelessWidget {
           crossAxisCount: 2,
           padding: EdgeInsets.all(3.0),
           children: <Widget>[
-            makeDashboardItem("Personal Data", "assets/personal.png"),
-            makeDashboardItem("Attendance Data", "assets/attendance.png"),
-            makeDashboardItem("Personal Data", "assets/attendance.png"),
-            makeDashboardItem("Personal Data", "assets/attendance.png"),
-            makeDashboardItem("Personal Data", "assets/personal.png"),
-            makeDashboardItem("Personal Data", "assets/personal.png"),
+            makeDashboardItem(
+                "View Attendance", "assets/personal.png", 0, context),
+            makeDashboardItem(
+                "Attendance Data", "assets/attendance.png", 1, context),
+            makeDashboardItem(
+                "Personal Data", "assets/attendance.png", 2, context),
+            makeDashboardItem(
+                "Personal Data", "assets/attendance.png", 3, context),
+            makeDashboardItem(
+                "Personal Data", "assets/personal.png", 4, context),
+            makeDashboardItem(
+                "Personal Data", "assets/personal.png", 5, context),
           ],
         ),
       ),
@@ -52,14 +74,27 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-Card makeDashboardItem(String title, String image) {
+Card makeDashboardItem(
+    String title, String image, int item, BuildContext context) {
   return Card(
       elevation: 2.5,
       margin: EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            switch (item) {
+              case 0:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewAttendance()));
+                break;
+
+              case 1:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profile()));
+                break;
+            }
+          },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -89,5 +124,11 @@ void onSelected(BuildContext context, int item) async {
       await FirebaseAuth.instance.signOut();
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Welcome()), (route) => false);
+      break;
+
+    case 1:
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Profile()));
+      break;
   }
 }
