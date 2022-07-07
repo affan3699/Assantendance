@@ -5,6 +5,11 @@ import 'package:assantendance/Screens/Welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+import '../api/PDF_API.dart';
+import '../api/pdf_invoice_api.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -56,11 +61,9 @@ class Dashboard extends StatelessWidget {
           padding: EdgeInsets.all(3.0),
           children: <Widget>[
             makeDashboardItem(
-                "View Attendance", "assets/personal.png", 0, context),
-            makeDashboardItem(
-                "Attendance Data", "assets/attendance.png", 1, context),
-            makeDashboardItem(
-                "Personal Data", "assets/attendance.png", 2, context),
+                "View Attendance", "assets/attendance.png", 0, context),
+            makeDashboardItem("Profile", "assets/personal.png", 1, context),
+            makeDashboardItem("Report", "assets/attendance.png", 2, context),
             makeDashboardItem(
                 "Personal Data", "assets/attendance.png", 3, context),
             makeDashboardItem(

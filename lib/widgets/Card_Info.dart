@@ -17,13 +17,13 @@ class CardInfo extends StatelessWidget {
         child: ListTile(
           leading: Icon(
             icon,
-            color: Colors.teal,
+            color: Colors.black,
           ),
           title: Text(
             text,
             style: GoogleFonts.redHatDisplay(
                 textStyle: TextStyle(
-              color: Colors.teal,
+              color: Colors.black,
               fontSize: 18,
             )),
           ),

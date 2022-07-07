@@ -8,6 +8,9 @@ import 'package:month_year_picker/month_year_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:get_mac/get_mac.dart';
 
+import '../api/PDF_API.dart';
+import '../api/pdf_invoice_api.dart';
+
 class ViewAttendance extends StatefulWidget {
   @override
   State<ViewAttendance> createState() => _ViewAttendanceState();
@@ -18,17 +21,25 @@ class _ViewAttendanceState extends State<ViewAttendance> {
   Color primary = Colors.blueAccent;
   late DatabaseReference ref;
   double screenWidth = 0;
+  final GlobalKey<AnimatedListState> _key = GlobalKey();
+  Tween<Offset> _offset = Tween(begin: Offset(1, 0), end: Offset(0, 0));
+  List<String> dates = <String>[];
+  List<String> checkIn = <String>[];
+  List<String> checkOut = <String>[];
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {});
     getData().whenComplete(() => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    dates.clear();
+    checkIn.clear();
+    checkOut.clear();
 
     return Scaffold(
       appBar: AppBar(
@@ -68,107 +79,139 @@ class _ViewAttendanceState extends State<ViewAttendance> {
                 ),
               ],
             ),
+            FirebaseAnimatedList(
+              key: _key,
+              physics: BouncingScrollPhysics(),
+              shrinkWrap: true,
+              query: ref,
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                final data = snapshot.value as dynamic; // Attendance data
+                final data2 = snapshot.key as dynamic; // Days
+
+                String getMonth = data2.toString().split(" ")[1];
+                if (getMonth == month) {
+                  dates.add(data2);
+                  checkIn.add(data['CheckIn']);
+                  checkOut.add(data['CheckOut']);
+                }
+                //print(getMonth);
+                //print(data);
+                //print(macAddress1);
+                return getMonth == month
+                    ? Container(
+                        margin: EdgeInsets.only(
+                          top: index > 0 ? 15 : 0,
+                          left: 0,
+                          right: 0,
+                        ),
+                        height: 150,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 10,
+                              offset: Offset(2, 2),
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(),
+                                decoration: BoxDecoration(
+                                  color: primary,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(20)),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    data2.toString(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: screenWidth / 18,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Check In",
+                                    style: TextStyle(
+                                      fontSize: screenWidth / 20,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  Text(
+                                    data['CheckIn'],
+                                    style: TextStyle(
+                                      fontSize: screenWidth / 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Check Out",
+                                    style: TextStyle(
+                                      fontSize: screenWidth / 20,
+                                      color: Colors.black54,
+                                    ),
+                                  ),
+                                  Text(
+                                    data['CheckOut'],
+                                    style: TextStyle(
+                                      fontSize: screenWidth / 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container();
+              },
+            ),
+            SizedBox(height: 18.0),
             Container(
-              height: MediaQuery.of(context).size.height,
-              child: FirebaseAnimatedList(
-                physics: BouncingScrollPhysics(),
-                query: ref,
-                itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                    Animation<double> animation, int index) {
-                  final data = snapshot.value as dynamic;
-                  final data2 = snapshot.key as dynamic;
-                  print(data);
-                  print(macAddress1);
-                  return Container(
-                    margin: EdgeInsets.only(
-                      top: index > 0 ? 12 : 0,
-                      left: 0,
-                      right: 0,
-                    ),
-                    height: 150,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          offset: Offset(2, 2),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            margin: const EdgeInsets.only(),
-                            decoration: BoxDecoration(
-                              color: primary,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(20)),
-                            ),
-                            child: Center(
-                              child: Text(
-                                data2.toString(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: screenWidth / 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Check In",
-                                style: TextStyle(
-                                  fontSize: screenWidth / 20,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              Text(
-                                data['CheckIn'],
-                                style: TextStyle(
-                                  fontSize: screenWidth / 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Check Out",
-                                style: TextStyle(
-                                  fontSize: screenWidth / 20,
-                                  color: Colors.black54,
-                                ),
-                              ),
-                              Text(
-                                data['CheckOut'],
-                                style: TextStyle(
-                                  fontSize: screenWidth / 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+              padding: EdgeInsets.symmetric(horizontal: 28),
+              child: ElevatedButton(
+                onPressed: () {
+                  generateReport();
                 },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  elevation: 5.0,
+                  shape: const BeveledRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  minimumSize: Size.fromHeight(50.0),
+                ),
+                child: Text(
+                  "Generate Report",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
+                ),
               ),
             )
           ],
@@ -205,6 +248,19 @@ class _ViewAttendanceState extends State<ViewAttendance> {
         month = DateFormat('MMMM').format(month1);
       });
     }
+  }
+
+  Future<void> generateReport() async {
+    // DataSnapshot snapshot = await ref.get();
+    // final date = snapshot.value as dynamic;
+    // print("PDF ka data = " + date.toString());
+
+    //print(dates);
+
+    final pdfFile =
+        await PdfInvoiceApi.generate(month, dates, checkIn, checkOut);
+
+    PdfApi.openFile(pdfFile);
   }
 
   Future<void> initMacAddress() async {

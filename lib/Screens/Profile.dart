@@ -35,18 +35,21 @@ class _ProfileState extends State<Profile> {
             children: <Widget>[
               CircleAvatar(
                 radius: 75,
-                backgroundImage: NetworkImage(imageURL),
+                backgroundImage:
+                    imageURL != null ? NetworkImage(imageURL) : null,
               ),
               SizedBox(height: 10.0),
-              Text(name,
-                  style: GoogleFonts.redHatDisplay(
-                    textStyle: TextStyle(
-                      fontSize: 40.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Pacifico",
-                    ),
-                  )),
+              Text(
+                name,
+                style: GoogleFonts.redHatDisplay(
+                  textStyle: TextStyle(
+                    fontSize: 40.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Pacifico",
+                  ),
+                ),
+              ),
               Text(
                 "DHA Suffa University",
                 style: TextStyle(
@@ -63,12 +66,10 @@ class _ProfileState extends State<Profile> {
                   color: Colors.white,
                 ),
               ),
-              // we will be creating a new widget name info carrd
               CardInfo(text: email, icon: Icons.email),
               CardInfo(text: "Semester $semester", icon: Icons.school),
-              CardInfo(text: phone, icon: Icons.phone),
-              //CardInfo(text: location, icon: Icons.location_city),
-              //TextButton(onPressed: _readdb_onechild, child: Text("HEllo"))
+              CardInfo(text: phone, icon: Icons.phone_android),
+              CardInfo(text: "Model Name", icon: Icons.info)
             ],
           ),
         ));
@@ -85,17 +86,19 @@ class _ProfileState extends State<Profile> {
   Future<void> getProfileData() async {
     initMacAddress();
     DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
-    final snapshot = await _databaseReference.child(macAddress).get();
+    final snapshot = await _databaseReference.get();
+    //print(snapshot.value);
+    //print(macAddress);
 
     if (snapshot.exists) {
       final data = snapshot.value as dynamic;
-      print(data);
+      print("DATA = " + data.toString());
 
       setState(() {
-        imageURL = data[macAddress]["URL"];
-        email = data[macAddress]["Email"];
-        name = data[macAddress]["Name"];
-        semester = data[macAddress]["Semester"];
+        imageURL = data[macAddress]["URL"].toString();
+        email = data[macAddress]["Email"].toString();
+        name = data[macAddress]["Name"].toString();
+        semester = data[macAddress]["Semester"].toString();
       });
     } else {
       print('No data available.');

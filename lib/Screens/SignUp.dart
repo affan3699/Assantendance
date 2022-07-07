@@ -307,6 +307,7 @@ class _SignUpState extends State<SignUp> {
 
         _databaseReference.child(macAddress).set({
           "Name": name,
+          "Email": email,
           "Semester": selectedValue,
           "URL": imageURL,
           "UID": userCredential.user!.uid,

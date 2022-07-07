@@ -46,6 +46,8 @@ dependencies:
   google_fonts: ^3.0.1
   slide_to_act: ^2.0.1
   month_year_picker: ^0.2.0+1
+  pdf: ^3.8.1
+  open_file: ^2.1.1
 
 dev_dependencies:
   flutter_test:
