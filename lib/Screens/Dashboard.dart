@@ -5,11 +5,8 @@ import 'package:assantendance/Screens/Welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 
-import '../api/PDF_API.dart';
-import '../api/pdf_invoice_api.dart';
+import 'LeaveRequest.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -61,15 +58,10 @@ class Dashboard extends StatelessWidget {
           padding: EdgeInsets.all(3.0),
           children: <Widget>[
             makeDashboardItem(
-                "View Attendance", "assets/attendance.png", 0, context),
+                "Check Attendance", "assets/attendance.png", 0, context),
             makeDashboardItem("Profile", "assets/personal.png", 1, context),
-            makeDashboardItem("Report", "assets/attendance.png", 2, context),
-            makeDashboardItem(
-                "Personal Data", "assets/attendance.png", 3, context),
-            makeDashboardItem(
-                "Personal Data", "assets/personal.png", 4, context),
-            makeDashboardItem(
-                "Personal Data", "assets/personal.png", 5, context),
+            makeDashboardItem("Leave Request", "assets/leave.png", 2, context),
+            makeDashboardItem("Log Out", "assets/logout.png", 3, context),
           ],
         ),
       ),
@@ -80,12 +72,12 @@ class Dashboard extends StatelessWidget {
 Card makeDashboardItem(
     String title, String image, int item, BuildContext context) {
   return Card(
-      elevation: 2.5,
+      elevation: 2.7,
       margin: EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(color: Colors.white),
         child: InkWell(
-          onTap: () {
+          onTap: () async {
             switch (item) {
               case 0:
                 Navigator.push(context,
@@ -95,6 +87,18 @@ Card makeDashboardItem(
               case 1:
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Profile()));
+                break;
+
+              case 2:
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LeaveRequest()));
+                break;
+
+              case 3:
+                await FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => Welcome()),
+                    (route) => false);
                 break;
             }
           },

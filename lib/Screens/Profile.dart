@@ -11,10 +11,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  String email = "",
-      phone = "03312457852",
+  String email = "Loading...",
+      phone = "Loading...",
       semester = "",
-      name = "",
+      name = "Loading...",
       macAddress = "",
       imageURL = "";
 
