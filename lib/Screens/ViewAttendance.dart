@@ -95,6 +95,7 @@ class _ViewAttendanceState extends State<ViewAttendance> {
                   checkIn.add(data['CheckIn']);
                   checkOut.add(data['CheckOut']);
                 }
+
                 //print(getMonth);
                 //print(data);
                 //print(macAddress1);

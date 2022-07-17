@@ -155,7 +155,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
           key: _key,
           physics: BouncingScrollPhysics(),
           query: ref,
-          itemBuilder: (BuildContext context, DataSnapshot snapshot,
+          itemBuilder: (BuildContext context, snapshot,
               Animation<double> animation, int i) {
             final data = snapshot.value as dynamic; // Leave data
             print(data);

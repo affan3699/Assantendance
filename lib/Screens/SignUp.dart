@@ -31,7 +31,7 @@ class _SignUpState extends State<SignUp> {
   void _imgFromCamera() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
-      imageQuality: 50,
+      imageQuality: 40,
       preferredCameraDevice: CameraDevice.front,
     );
     if (pickedFile != null) {
@@ -222,7 +222,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(height: 40),
                     InkWell(
                       onTap: () {
-                        sign_Up(email, password);
+                        sign_Up();
                       },
                       child: Container(
                         height: 40,
@@ -275,10 +275,14 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void sign_Up(String email, String password) async {
-    if (email.isEmpty || password.isEmpty) {
+  void sign_Up() async {
+    if (email.isEmpty ||
+        password.isEmpty ||
+        selectedValue.isEmpty ||
+        name.isEmpty ||
+        imageFile == null) {
       Fluttertoast.showToast(
-        msg: "Please Enter Your Email or Password",
+        msg: "Fields cannot be Empty!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,

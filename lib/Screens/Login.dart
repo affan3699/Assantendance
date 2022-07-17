@@ -1,3 +1,4 @@
+import 'package:assantendance/Screens/AdminDashboard.dart';
 import 'package:assantendance/Screens/Dashboard.dart';
 import 'package:assantendance/Screens/ForgotPassword.dart';
 import 'package:flutter/material.dart';
@@ -214,9 +215,15 @@ class _LoginState extends State<Login> {
           textColor: Colors.white,
           fontSize: 15.0,
         );
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => Dashboard()),
-            (route) => false);
+        if (email == 'affan123@live.com') {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => AdminDashboard()),
+              (route) => false);
+        } else {
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => Dashboard()),
+              (route) => false);
+        }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           Fluttertoast.showToast(

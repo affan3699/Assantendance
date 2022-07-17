@@ -79,28 +79,6 @@ class Welcome extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => SignUp()));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
-                      elevation: 5.0,
-                      shape: const BeveledRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      minimumSize: Size.fromHeight(58.0),
-                    ),
-                    child: Text(
-                      "Admin Login",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                      ),
-                    ),
-                  )
                 ],
               )
             ],
