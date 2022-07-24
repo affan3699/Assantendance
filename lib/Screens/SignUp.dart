@@ -203,6 +203,7 @@ class _SignUpState extends State<SignUp> {
                         border: Border.all(color: Colors.blueAccent),
                       ),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.school_outlined, color: Colors.blueAccent),
                           SizedBox(width: 15.0),

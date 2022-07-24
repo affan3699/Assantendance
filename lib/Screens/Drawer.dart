@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'AdminLeaveRequests.dart';
 import 'Login.dart';
+import 'ManualAttendance.dart';
 
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -38,7 +39,11 @@ class NavigationDrawer extends StatelessWidget {
           ),
           Divider(color: Colors.black),
           _createDrawerItem(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ManualAttendace()));
+            },
             icon: Icons.note,
             text: 'Manual Attendance',
           ),
