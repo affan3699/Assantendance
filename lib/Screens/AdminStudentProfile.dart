@@ -2,6 +2,7 @@ import 'package:assantendance/widgets/Card_Info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import 'AdminViewAttendance.dart';
 
@@ -37,10 +38,14 @@ class _AdminStudentProfile extends State<AdminStudentProfile> {
           minimum: const EdgeInsets.only(top: 50),
           child: Column(
             children: <Widget>[
-              CircleAvatar(
-                radius: 80,
-                backgroundImage:
-                    imageURL != null ? NetworkImage(imageURL) : null,
+              CachedNetworkImage(
+                fit: BoxFit.cover,
+                height: 180,
+                width: 180,
+                imageUrl: imageURL,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    CircularProgressIndicator(value: downloadProgress.progress),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
               SizedBox(height: 10.0),
               Text(
