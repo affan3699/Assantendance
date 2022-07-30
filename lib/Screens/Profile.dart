@@ -13,10 +13,11 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   String email = "Loading...",
       phone = "Loading...",
-      semester = "",
+      semester = "Loading...",
       name = "Loading...",
       macAddress = "",
-      imageURL = "";
+      imageURL = "",
+      brand = "Loading...";
 
   @override
   void initState() {
@@ -69,7 +70,7 @@ class _ProfileState extends State<Profile> {
               CardInfo(text: email, icon: Icons.email),
               CardInfo(text: "Semester $semester", icon: Icons.school),
               CardInfo(text: phone, icon: Icons.phone_android),
-              CardInfo(text: "Model Name", icon: Icons.info)
+              CardInfo(text: brand, icon: Icons.info)
             ],
           ),
         ));
@@ -99,6 +100,8 @@ class _ProfileState extends State<Profile> {
         email = data[macAddress]["Email"].toString();
         name = data[macAddress]["Name"].toString();
         semester = data[macAddress]["Semester"].toString();
+        phone = data[macAddress]["Phone"].toString();
+        brand = data[macAddress]["Brand"].toString();
       });
     } else {
       print('No data available.');

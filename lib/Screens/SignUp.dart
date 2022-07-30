@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:assantendance/Screens/Dashboard.dart';
 import 'package:assantendance/Screens/ForgotPassword.dart';
+import 'package:assantendance/Screens/Login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:get_mac/get_mac.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -21,17 +23,20 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   String email = "",
       password = "",
-      selectedValue = "Semester",
+      selectedValue = "Select",
       macAddress = "",
+      phone = "",
+      brand = "",
       name = "";
   bool showSpinner = false, isHiddenPassword = true;
   File? imageFile;
   late DatabaseReference _databaseReference;
+  late final androidDeviceInfo;
 
   void _imgFromCamera() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
-      imageQuality: 40,
+      imageQuality: 30,
       preferredCameraDevice: CameraDevice.front,
     );
     if (pickedFile != null) {
@@ -47,6 +52,7 @@ class _SignUpState extends State<SignUp> {
     super.initState();
     _databaseReference = FirebaseDatabase.instance.ref();
     initMacAddress();
+    getAndroidDeviceInfo();
   }
 
   @override
@@ -91,15 +97,17 @@ class _SignUpState extends State<SignUp> {
                         Icons.image,
                         size: 24.0,
                       ),
-                      label: Text('Add Image'),
+                      label: Text(
+                        'Add Image',
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
                     ),
                   ],
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height / 1.7,
+                height: MediaQuery.of(context).size.height / 1.6, // This One
                 width: MediaQuery.of(context).size.width,
-                color: Colors.amber, // amber
                 child: Column(
                   children: <Widget>[
                     Container(
@@ -196,6 +204,33 @@ class _SignUpState extends State<SignUp> {
                       height: 49,
                       margin: EdgeInsets.only(top: 21.0),
                       padding: EdgeInsets.only(
+                        top: 4,
+                        left: 16,
+                        right: 16,
+                        bottom: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.blueAccent),
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          phone = value;
+                        },
+                        keyboardType: TextInputType.phone,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          icon: FaIcon(Icons.phone, color: Colors.blueAccent),
+                          hintText: "Phone No.",
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      height: 49,
+                      margin: EdgeInsets.only(top: 21.0),
+                      padding: EdgeInsets.only(
                           top: 4, left: 16, right: 16, bottom: 7),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
@@ -203,19 +238,20 @@ class _SignUpState extends State<SignUp> {
                         border: Border.all(color: Colors.blueAccent),
                       ),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(Icons.school_outlined, color: Colors.blueAccent),
                           SizedBox(width: 15.0),
-                          DropdownButton(
-                            value: selectedValue,
-                            items: dropdownItems,
-                            hint: Text("Select Semester"),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedValue = newValue!;
-                              });
-                            },
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton(
+                              value: selectedValue,
+                              items: dropdownItems,
+                              hint: Text("Select Semester"),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedValue = newValue!;
+                                });
+                              },
+                            ),
                           ),
                         ],
                       ),
@@ -260,10 +296,9 @@ class _SignUpState extends State<SignUp> {
                         ],
                       ),
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ForgotPassword()));
+                        Navigator.pop(context);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => Login()));
                       },
                     ),
                   ],
@@ -281,9 +316,20 @@ class _SignUpState extends State<SignUp> {
         password.isEmpty ||
         selectedValue.isEmpty ||
         name.isEmpty ||
+        phone.isEmpty ||
         imageFile == null) {
       Fluttertoast.showToast(
         msg: "Fields cannot be Empty!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } else if (!email.contains('@')) {
+      Fluttertoast.showToast(
+        msg: "Invalid Email!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -313,7 +359,9 @@ class _SignUpState extends State<SignUp> {
         _databaseReference.child(macAddress).set({
           "Name": name,
           "Email": email,
+          "Phone": phone,
           "Semester": selectedValue,
+          "Brand": brand,
           "URL": imageURL,
           "UID": userCredential.user!.uid,
         });
@@ -383,7 +431,7 @@ class _SignUpState extends State<SignUp> {
       DropdownMenuItem(child: Text("6"), value: "6"),
       DropdownMenuItem(child: Text("7"), value: "7"),
       DropdownMenuItem(child: Text("8"), value: "8"),
-      DropdownMenuItem(child: Text("Semester"), value: "Semester"),
+      DropdownMenuItem(child: Text("Select"), value: "Select"),
     ];
     return menuItems;
   }
@@ -394,5 +442,11 @@ class _SignUpState extends State<SignUp> {
     } on PlatformException {
       print("Error Getting MAC Address");
     }
+  }
+
+  Future<void> getAndroidDeviceInfo() async {
+    final deviceInfo = DeviceInfoPlugin();
+    androidDeviceInfo = await deviceInfo.androidInfo;
+    brand = androidDeviceInfo.brand + ' ' + androidDeviceInfo.device;
   }
 }

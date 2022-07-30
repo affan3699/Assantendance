@@ -151,33 +151,40 @@ class _LeaveRequestState extends State<LeaveRequest> {
         },
         child: Icon(Icons.add),
       ),
-      body: FirebaseAnimatedList(
-          key: _key,
-          physics: BouncingScrollPhysics(),
-          query: ref,
-          itemBuilder: (BuildContext context, snapshot,
-              Animation<double> animation, int i) {
-            final data = snapshot.value as dynamic; // Leave data
-            print(data);
+      body: ref != null
+          ? FirebaseAnimatedList(
+              key: _key,
+              physics: BouncingScrollPhysics(),
+              query: ref,
+              itemBuilder: (BuildContext context, snapshot,
+                  Animation<double> animation, int i) {
+                final data = snapshot.value as dynamic; // Leave data
+                print(data);
 
-            return SizeTransition(
-              key: UniqueKey(),
-              sizeFactor: animation,
-              child: Card(
-                elevation: 4.0,
-                margin: EdgeInsets.all(15.0),
-                child: ListTile(
-                  title: Text(
-                    data['Reason'],
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                return SizeTransition(
+                  key: UniqueKey(),
+                  sizeFactor: animation,
+                  child: Card(
+                    elevation: 4.0,
+                    margin: EdgeInsets.all(15.0),
+                    child: ListTile(
+                      title: Text(
+                        data['Reason'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: data['Approved'] == 0
+                          ? Text('Pending')
+                          : Text('Approved'),
+                      trailing: data['Approved'] == 0
+                          ? Icon(Icons.pending,
+                              color: Colors.redAccent, size: 28.0)
+                          : Icon(Icons.check_box,
+                              color: Colors.green, size: 28.0),
+                    ),
                   ),
-                  trailing: data['Approved'] == 0
-                      ? Icon(Icons.pending, color: Colors.redAccent, size: 28.0)
-                      : Icon(Icons.check_box, color: Colors.green, size: 28.0),
-                ),
-              ),
-            );
-          }),
+                );
+              })
+          : CircularProgressIndicator(color: Colors.blue),
     );
   }
 

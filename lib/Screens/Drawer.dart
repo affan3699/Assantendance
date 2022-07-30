@@ -23,7 +23,7 @@ class NavigationDrawer extends StatelessWidget {
           _createDrawerItem(
             onTap: () {},
             icon: Icons.person,
-            text: 'Employees',
+            text: 'Students',
           ),
           Divider(color: Colors.black),
           _createDrawerItem(
