@@ -49,6 +49,7 @@ dependencies:
   pdf: ^3.8.1
   open_file: ^2.1.1
   device_info_plus: ^4.0.1
+  cached_network_image: ^3.2.1
 
 dev_dependencies:
   flutter_test:

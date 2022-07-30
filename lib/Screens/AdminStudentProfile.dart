@@ -1,16 +1,20 @@
 import 'package:assantendance/widgets/Card_Info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/services.dart';
-import 'package:get_mac/get_mac.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Profile extends StatefulWidget {
+import 'AdminViewAttendance.dart';
+
+class AdminStudentProfile extends StatefulWidget {
+  String mac;
+
+  AdminStudentProfile(this.mac);
+
   @override
-  State<Profile> createState() => _ProfileState();
+  State<AdminStudentProfile> createState() => _AdminStudentProfile();
 }
 
-class _ProfileState extends State<Profile> {
+class _AdminStudentProfile extends State<AdminStudentProfile> {
   String email = "Loading...",
       phone = "Loading...",
       semester = "Loading...",
@@ -28,13 +32,13 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.blueAccent.shade100,
+        backgroundColor: Colors.redAccent.shade100,
         body: SafeArea(
-          minimum: const EdgeInsets.only(top: 100),
+          minimum: const EdgeInsets.only(top: 50),
           child: Column(
             children: <Widget>[
               CircleAvatar(
-                radius: 75,
+                radius: 80,
                 backgroundImage:
                     imageURL != null ? NetworkImage(imageURL) : null,
               ),
@@ -69,22 +73,41 @@ class _ProfileState extends State<Profile> {
               CardInfo(text: email, icon: Icons.email),
               CardInfo(text: "Semester $semester", icon: Icons.school),
               CardInfo(text: phone, icon: Icons.phone_android),
-              CardInfo(text: brand, icon: Icons.info)
+              CardInfo(text: brand, icon: Icons.info),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 28),
+                margin: EdgeInsets.only(top: 10.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                AdminViewAttendance(widget.mac)));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.black54,
+                    elevation: 5.0,
+                    shape: const BeveledRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                    minimumSize: Size.fromHeight(50.0),
+                  ),
+                  child: Text(
+                    "View Attendance",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
         ));
   }
 
-  Future<void> initMacAddress() async {
-    try {
-      macAddress = await GetMac.macAddress;
-    } on PlatformException {
-      print("Error Getting MAC Address");
-    }
-  }
-
   Future<void> getProfileData() async {
-    initMacAddress();
+    macAddress = widget.mac;
     DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await _databaseReference.get();
     //print(snapshot.value);

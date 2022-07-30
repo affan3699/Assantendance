@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'AdminLeaveRequests.dart';
 import 'Login.dart';
 import 'ManualAttendance.dart';
+import 'AdminStudents.dart';
 
 class NavigationDrawer extends StatelessWidget {
   @override
@@ -21,7 +22,11 @@ class NavigationDrawer extends StatelessWidget {
           ),
           Divider(color: Colors.black),
           _createDrawerItem(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminStudents()));
+            },
             icon: Icons.person,
             text: 'Students',
           ),

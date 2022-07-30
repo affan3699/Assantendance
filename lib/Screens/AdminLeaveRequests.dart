@@ -1,13 +1,8 @@
-import 'dart:ffi';
-
 import 'package:assantendance/Screens/LeaveRDetails.dart';
-import 'package:assantendance/Screens/LeaveRequest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:get_mac/get_mac.dart';
 
 import 'Drawer.dart';
 import 'Welcome.dart';
@@ -21,19 +16,22 @@ class _AdminLeaveRequestsState extends State<AdminLeaveRequests> {
   late DatabaseReference ref;
   String macAddress1 = '';
   List leaveRequests = [];
+  bool flag = true;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print('google');
     //ref = FirebaseDatabase.instance.ref('B4:0F:B3:47:BF:8F');
-    getAllLeaveRequests().whenComplete(() => setState(() {}));
+    getAllLeaveRequests().whenComplete(() => setState(() {
+          flag = false;
+        }));
   }
 
   @override
   Widget build(BuildContext context) {
     leaveRequests.clear();
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -63,56 +61,62 @@ class _AdminLeaveRequestsState extends State<AdminLeaveRequests> {
           ],
         ),
         drawer: NavigationDrawer(),
-        body: FirebaseAnimatedList(
-            physics: BouncingScrollPhysics(),
-            query: ref,
-            itemBuilder: (BuildContext context, snapshot,
-                Animation<double> animation, int i) {
-              List data = snapshot.child('LeaveRequests').children.toList()
-                  as dynamic; // Leave data
-              final name = snapshot.value as dynamic;
-              final mac = snapshot.key as dynamic;
-              print(name['Name']);
-              print(mac);
-              for (int i = 0; i < data.length; i++) {
-                print(data[i].child('Approved').value);
-                print(data[i].key);
-              }
-              //data.forEach((var num) => print(num));
+        body: flag == false
+            ? FirebaseAnimatedList(
+                physics: BouncingScrollPhysics(),
+                query: ref,
+                itemBuilder: (BuildContext context, snapshot,
+                    Animation<double> animation, int i) {
+                  List data = snapshot.child('LeaveRequests').children.toList()
+                      as dynamic; // Leave data
+                  final name = snapshot.value as dynamic;
+                  final mac = snapshot.key as dynamic;
+                  print(name['Name']);
+                  print(mac);
+                  for (int i = 0; i < data.length; i++) {
+                    print(data[i].child('Approved').value);
+                    print(data[i].key);
+                  }
+                  //data.forEach((var num) => print(num));
 
-              // ref.onValue.listen((event) {
-              //   for (final child in event.snapshot.children) {
-              //     Map<dynamic, dynamic> values =
-              //         child.child('LeaveRequests').value as dynamic;
-              //     values.forEach((key, values) {
-              //       leaveRequests.add(key);
-              //     });
-              //     //print(child.child('LeaveRequests').value);
-              //     print(child.child('LeaveRequests').value);
-              //   }
-              // }, onError: (error) {});
+                  // ref.onValue.listen((event) {
+                  //   for (final child in event.snapshot.children) {
+                  //     Map<dynamic, dynamic> values =
+                  //         child.child('LeaveRequests').value as dynamic;
+                  //     values.forEach((key, values) {
+                  //       leaveRequests.add(key);
+                  //     });
+                  //     //print(child.child('LeaveRequests').value);
+                  //     print(child.child('LeaveRequests').value);
+                  //   }
+                  // }, onError: (error) {});
 
-              return Card(
-                elevation: 4.0,
-                margin: EdgeInsets.all(15.0),
-                child: ListTile(
-                  title: Text(
-                    name['Name'],
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(mac),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LeaveRDetails(data, mac)));
-                    },
-                    child: Text('Open'),
-                  ),
-                ),
-              );
-            }),
+                  return Card(
+                    elevation: 4.0,
+                    margin: EdgeInsets.all(15.0),
+                    child: ListTile(
+                      title: Text(
+                        name['Name'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(mac),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      LeaveRDetails(data, mac)));
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.redAccent)),
+                        child: Text('Open'),
+                      ),
+                    ),
+                  );
+                })
+            : Center(child: CircularProgressIndicator(color: Colors.redAccent)),
       ),
     );
   }
@@ -124,13 +128,6 @@ class _AdminLeaveRequestsState extends State<AdminLeaveRequests> {
     print("hello houhh");
     //print(data.toString());
   }
-
-  Future<void> getUserAmount() async {
-    ref = await FirebaseDatabase.instance.ref();
-    var users = [];
-    ref.onValue.forEach((v) => users.add(v));
-    print(users);
-  }
 }
 
 void onSelected(BuildContext context, int item) async {
@@ -140,23 +137,5 @@ void onSelected(BuildContext context, int item) async {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => Welcome()), (route) => false);
       break;
-  }
-}
-
-class Item {
-  String expandedValue, headerValue;
-  bool isExpanded;
-
-  Item(
-      {this.expandedValue = '',
-      this.headerValue = '',
-      this.isExpanded = false});
-
-  List<Item> generateItems(int n) {
-    return List.generate(n, (index) {
-      return Item(
-          headerValue: 'Panel $index',
-          expandedValue: 'This is item Number $index');
-    });
   }
 }
