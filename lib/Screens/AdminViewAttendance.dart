@@ -5,6 +5,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import '../api/PDF_API.dart';
 import '../api/pdf_invoice_api.dart';
@@ -28,6 +29,10 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
   List<String> checkIn = <String>[];
   List<String> checkOut = <String>[];
   bool flag = true;
+  Map<String, double> dataMap = {
+    "Absent": 10,
+    "Present": 80,
+  };
 
   @override
   void initState() {
@@ -85,6 +90,73 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                       ),
                     ],
                   ),
+                  Container(
+                    color: Colors.white,
+                    height: 300,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        PieChart(
+                          dataMap: dataMap,
+                          animationDuration: Duration(milliseconds: 900),
+                          chartLegendSpacing: 32,
+                          chartRadius: MediaQuery.of(context).size.width / 2.5,
+                          initialAngleInDegree: 0,
+                          chartType: ChartType.ring,
+                          centerText: '75.1%',
+                          centerTextStyle: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0),
+                          legendOptions: LegendOptions(
+                            showLegendsInRow: false,
+                            legendPosition: LegendPosition.left,
+                            showLegends: true,
+                            legendTextStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          chartValuesOptions: ChartValuesOptions(
+                            showChartValueBackground: false,
+                            showChartValues: false,
+                            showChartValuesInPercentage: false,
+                            showChartValuesOutside: true,
+                            decimalPlaces: 1,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 13),
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15.0),
+                            color: Colors.redAccent.shade100,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(
+                                Icons.dangerous,
+                                color: Colors.black,
+                                size: 22,
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: Text("The Student is Short by 10%.",
+                                    style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    )),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20.0),
                   FirebaseAnimatedList(
                     key: _key,
                     physics: BouncingScrollPhysics(),
@@ -239,7 +311,7 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(2022),
-        lastDate: DateTime(2099),
+        lastDate: DateTime(2023),
         builder: (context, child) {
           return Theme(
             data: Theme.of(context).copyWith(
