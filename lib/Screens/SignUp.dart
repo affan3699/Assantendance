@@ -366,6 +366,8 @@ class _SignUpState extends State<SignUp> {
           "UID": userCredential.user!.uid,
         });
 
+        _databaseReference.child("LeaveRequests").set({});
+
         Fluttertoast.showToast(
           msg: "You are Successfully Registered!",
           toastLength: Toast.LENGTH_SHORT,

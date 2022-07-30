@@ -12,11 +12,14 @@ class AdminStudents extends StatefulWidget {
 
 class _AdminStudentsState extends State<AdminStudents> {
   late final DatabaseReference ref;
+  bool flag = true;
 
   @override
   void initState() {
     super.initState();
-    getAllStudents().whenComplete(() => setState(() {}));
+    getAllStudents().whenComplete(() => setState(() {
+          flag = false;
+        }));
   }
 
   @override
@@ -30,42 +33,45 @@ class _AdminStudentsState extends State<AdminStudents> {
           backgroundColor: Colors.redAccent,
         ),
         drawer: NavigationDrawer(),
-        body: FirebaseAnimatedList(
-            physics: BouncingScrollPhysics(),
-            query: ref,
-            itemBuilder: (BuildContext context, snapshot,
-                Animation<double> animation, int i) {
-              final name = snapshot.value as dynamic;
-              final mac = snapshot.key as dynamic;
-              print(name['Name']);
-              print(mac);
+        body: flag == false
+            ? FirebaseAnimatedList(
+                physics: BouncingScrollPhysics(),
+                query: ref,
+                itemBuilder: (BuildContext context, snapshot,
+                    Animation<double> animation, int i) {
+                  final name = snapshot.value as dynamic;
+                  final mac = snapshot.key as dynamic;
+                  print(name['Name']);
+                  print(mac);
 
-              return Card(
-                elevation: 4.0,
-                margin: EdgeInsets.all(15.0),
-                child: ListTile(
-                  title: Text(
-                    name['Name'],
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(mac),
-                  trailing: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AdminStudentProfile(mac)));
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith(
-                            (states) => Colors.redAccent),
-                        elevation:
-                            MaterialStateProperty.resolveWith((states) => 2.0)),
-                    child: Text('Open'),
-                  ),
-                ),
-              );
-            }),
+                  return Card(
+                    elevation: 4.0,
+                    margin: EdgeInsets.all(15.0),
+                    child: ListTile(
+                      title: Text(
+                        name['Name'],
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text(mac),
+                      trailing: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      AdminStudentProfile(mac)));
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateColor.resolveWith(
+                                (states) => Colors.redAccent),
+                            elevation: MaterialStateProperty.resolveWith(
+                                (states) => 2.0)),
+                        child: Text('Open'),
+                      ),
+                    ),
+                  );
+                })
+            : Center(child: CircularProgressIndicator()),
       ),
     );
   }

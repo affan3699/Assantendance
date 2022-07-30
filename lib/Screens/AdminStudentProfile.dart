@@ -45,7 +45,8 @@ class _AdminStudentProfile extends State<AdminStudentProfile> {
                 imageUrl: imageURL,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
                     CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.downloading, size: 50.0),
               ),
               SizedBox(height: 10.0),
               Text(

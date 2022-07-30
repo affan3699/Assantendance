@@ -31,7 +31,7 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
         backgroundColor: Colors.blueAccent.shade100,
         body: SafeArea(
-          minimum: const EdgeInsets.only(top: 100),
+          minimum: const EdgeInsets.only(top: 50),
           child: Column(
             children: <Widget>[
               CachedNetworkImage(
@@ -41,7 +41,8 @@ class _ProfileState extends State<Profile> {
                 imageUrl: imageURL,
                 progressIndicatorBuilder: (context, url, downloadProgress) =>
                     CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+                errorWidget: (context, url, error) =>
+                    Icon(Icons.downloading, size: 50.0),
               ),
               SizedBox(height: 10.0),
               Text(

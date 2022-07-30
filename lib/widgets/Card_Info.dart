@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CardInfo extends StatelessWidget {
@@ -9,8 +11,20 @@ class CardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
+    return InkWell(
+      splashColor: Colors.red,
+      onLongPress: () {
+        Clipboard.setData(ClipboardData(text: text));
+        Fluttertoast.showToast(
+          msg: "Copied to Clipboard!",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black87,
+          textColor: Colors.white,
+          fontSize: 15.0,
+        );
+      },
       child: Card(
         color: Colors.white,
         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 24),

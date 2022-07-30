@@ -26,12 +26,15 @@ class _ViewAttendanceState extends State<ViewAttendance> {
   List<String> dates = <String>[];
   List<String> checkIn = <String>[];
   List<String> checkOut = <String>[];
+  bool flag = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {});
-    getData().whenComplete(() => setState(() {}));
+    getData().whenComplete(() => setState(() {
+          flag = false;
+        }));
   }
 
   @override
@@ -79,119 +82,126 @@ class _ViewAttendanceState extends State<ViewAttendance> {
                 ),
               ],
             ),
-            FirebaseAnimatedList(
-              key: _key,
-              physics: BouncingScrollPhysics(),
-              shrinkWrap: true,
-              query: ref,
-              itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                final data = snapshot.value as dynamic; // Attendance data
-                final data2 = snapshot.key as dynamic; // Days
+            flag == false
+                ? FirebaseAnimatedList(
+                    key: _key,
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    query: ref,
+                    itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                        Animation<double> animation, int index) {
+                      final data = snapshot.value as dynamic; // Attendance data
+                      final data2 = snapshot.key as dynamic; // Days
 
-                String getMonth = data2.toString().split(" ")[1];
-                if (getMonth == month) {
-                  dates.add(data2);
-                  checkIn.add(data['CheckIn']);
-                  checkOut.add(data['CheckOut']);
-                }
+                      String getMonth = data2.toString().split(" ")[1];
+                      if (getMonth == month) {
+                        dates.add(data2);
+                        checkIn.add(data['CheckIn']);
+                        checkOut.add(data['CheckOut']);
+                      }
 
-                //print(getMonth);
-                //print(data);
-                //print(macAddress1);
-                return getMonth == month
-                    ? Container(
-                        margin: EdgeInsets.only(
-                          top: index > 0 ? 15 : 0,
-                          left: 0,
-                          right: 0,
-                        ),
-                        height: 150,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10,
-                              offset: Offset(2, 2),
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(),
-                                decoration: BoxDecoration(
-                                  color: primary,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(20)),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    data2.toString(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: screenWidth / 18,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
+                      //print(getMonth);
+                      //print(data);
+                      //print(macAddress1);
+                      return getMonth == month
+                          ? Container(
+                              margin: EdgeInsets.only(
+                                top: index > 0 ? 15 : 0,
+                                left: 0,
+                                right: 0,
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
+                              height: 150,
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 10,
+                                    offset: Offset(2, 2),
+                                  ),
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    "Check In",
-                                    style: TextStyle(
-                                      fontSize: screenWidth / 20,
-                                      color: Colors.black54,
+                                  Expanded(
+                                    child: Container(
+                                      margin: const EdgeInsets.only(),
+                                      decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          data2.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: screenWidth / 18,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                  Text(
-                                    data['CheckIn'],
-                                    style: TextStyle(
-                                      fontSize: screenWidth / 18,
-                                      fontWeight: FontWeight.bold,
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Check In",
+                                          style: TextStyle(
+                                            fontSize: screenWidth / 20,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                        Text(
+                                          data['CheckIn'],
+                                          style: TextStyle(
+                                            fontSize: screenWidth / 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Check Out",
+                                          style: TextStyle(
+                                            fontSize: screenWidth / 20,
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                        Text(
+                                          data['CheckOut'],
+                                          style: TextStyle(
+                                            fontSize: screenWidth / 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Check Out",
-                                    style: TextStyle(
-                                      fontSize: screenWidth / 20,
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  Text(
-                                    data['CheckOut'],
-                                    style: TextStyle(
-                                      fontSize: screenWidth / 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : Container();
-              },
-            ),
+                            )
+                          : Container();
+                    },
+                  )
+                : CircularProgressIndicator(),
             SizedBox(height: 18.0),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 28),

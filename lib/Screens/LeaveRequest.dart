@@ -16,13 +16,16 @@ class _LeaveRequestState extends State<LeaveRequest> {
   List leaveRequests = [];
   String reason = "", message = "", macAddress1 = "";
   TextEditingController dateInput = TextEditingController();
-  late DatabaseReference ref;
+  late DatabaseReference ref, ref2;
   final GlobalKey<AnimatedListState> _key = GlobalKey();
+  bool flag = true;
 
   @override
   void initState() {
     super.initState();
-    getLeaveRequests().whenComplete(() => setState(() {}));
+    getLeaveRequests().whenComplete(() => setState(() {
+          flag = false;
+        }));
   }
 
   @override
@@ -74,7 +77,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                             if (pickedDate != null) {
                               print(pickedDate);
                               String formattedDate =
-                                  DateFormat('dd-MMMM-yyyy').format(pickedDate);
+                                  DateFormat('dd MMMM yyyy').format(pickedDate);
                               print(formattedDate);
 
                               setState(() {
@@ -151,7 +154,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
         },
         child: Icon(Icons.add),
       ),
-      body: ref != null
+      body: flag == false
           ? FirebaseAnimatedList(
               key: _key,
               physics: BouncingScrollPhysics(),
@@ -184,7 +187,7 @@ class _LeaveRequestState extends State<LeaveRequest> {
                   ),
                 );
               })
-          : CircularProgressIndicator(color: Colors.blue),
+          : Center(child: CircularProgressIndicator()),
     );
   }
 
@@ -200,10 +203,16 @@ class _LeaveRequestState extends State<LeaveRequest> {
 
   Future<void> registerLeaveRequest() async {
     String date = dateInput.text;
-    ref.child(date).set({
+    await ref.child(date).set({
       "Approved": 0,
       "Message": message,
       "Reason": reason,
+    });
+
+    ref2 = FirebaseDatabase.instance.ref('$macAddress1/Attendance');
+    await ref2.child(date).set({
+      "CheckIn": "Leave",
+      "CheckOut": "Leave",
     });
   }
 }
