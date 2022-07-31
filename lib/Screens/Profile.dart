@@ -32,51 +32,55 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.blueAccent.shade100,
         body: SafeArea(
           minimum: const EdgeInsets.only(top: 50),
-          child: Column(
-            children: <Widget>[
-              CachedNetworkImage(
-                fit: BoxFit.cover,
-                height: 180,
-                width: 180,
-                imageUrl: imageURL,
-                progressIndicatorBuilder: (context, url, downloadProgress) =>
-                    CircularProgressIndicator(value: downloadProgress.progress),
-                errorWidget: (context, url, error) =>
-                    Icon(Icons.downloading, size: 50.0),
-              ),
-              SizedBox(height: 10.0),
-              Text(
-                name,
-                style: GoogleFonts.redHatDisplay(
-                  textStyle: TextStyle(
-                    fontSize: 40.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Pacifico",
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                CachedNetworkImage(
+                  fit: BoxFit.cover,
+                  height: 180,
+                  width: 180,
+                  imageUrl: imageURL,
+                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                      CircularProgressIndicator(
+                          value: downloadProgress.progress),
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.downloading, size: 50.0),
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  name,
+                  style: GoogleFonts.redHatDisplay(
+                    textStyle: TextStyle(
+                      fontSize: 40.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Pacifico",
+                    ),
                   ),
                 ),
-              ),
-              Text(
-                "DHA Suffa University",
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                    letterSpacing: 2.5,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: "Source Sans Pro"),
-              ),
-              SizedBox(
-                height: 20,
-                width: 200,
-                child: Divider(
-                  color: Colors.white,
+                Text(
+                  "DHA Suffa University",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      letterSpacing: 2.5,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Source Sans Pro"),
                 ),
-              ),
-              CardInfo(text: email, icon: Icons.email),
-              CardInfo(text: "Semester $semester", icon: Icons.school),
-              CardInfo(text: phone, icon: Icons.phone_android),
-              CardInfo(text: brand, icon: Icons.info)
-            ],
+                SizedBox(
+                  height: 20,
+                  width: 200,
+                  child: Divider(
+                    color: Colors.white,
+                  ),
+                ),
+                CardInfo(text: email, icon: Icons.email),
+                CardInfo(text: "Semester $semester", icon: Icons.school),
+                CardInfo(text: phone, icon: Icons.phone_android),
+                CardInfo(text: brand, icon: Icons.info)
+              ],
+            ),
           ),
         ));
   }

@@ -42,214 +42,219 @@ class _ManualAttendaceState extends State<ManualAttendace> {
           elevation: 2.0,
         ),
         drawer: NavigationDrawer(),
-        body: ModalProgressHUD(
-          inAsyncCall: showSpinner,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                height: 200,
-                width: 205,
-                margin: EdgeInsets.only(top: 10.0),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(
-                        'https://cdn-icons-png.flaticon.com/512/850/850960.png'),
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: ModalProgressHUD(
+            inAsyncCall: showSpinner,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 200,
+                  width: 205,
+                  margin: EdgeInsets.only(top: 10.0),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://cdn-icons-png.flaticon.com/512/850/850960.png'),
+                    ),
                   ),
+                  child: null,
                 ),
-                child: null,
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 49,
-                margin: EdgeInsets.only(top: 21.0),
-                padding: EdgeInsets.only(
-                  top: 8,
-                  left: 16,
-                  right: 16,
-                  bottom: 4,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.redAccent),
-                ),
-                child: TextField(
-                  controller: dateInput,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2022),
-                        lastDate: DateTime(2030));
-
-                    if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('dd MMMM yyyy').format(pickedDate);
-                      print(formattedDate);
-
-                      setState(() {
-                        dateInput.text =
-                            formattedDate; //set output date to TextField value.
-                      });
-                    } else {
-                      print("Date is not selected");
-                    }
-                  },
-                  readOnly: true,
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
-                    hintText: "Select Date",
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.calendar_today, color: Colors.black),
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
+                Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 49,
                   margin: EdgeInsets.only(top: 21.0),
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 7),
+                  padding: EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                    bottom: 4,
+                  ),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     color: Colors.white,
                     border: Border.all(color: Colors.redAccent),
                   ),
-                  child: Row(
-                    children: [
-                      Icon(Icons.person),
-                      SizedBox(width: 15.0),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          elevation: 2,
-                          value: selectedValue,
-                          items: items.map((String items) {
-                            return DropdownMenuItem(
-                                child: Text(items,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                value: items);
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedValue = newValue!;
-                              print(selectedValue);
-                              var i = students.values
-                                  .toList()
-                                  .indexOf(selectedValue);
-                              print(students.keys.toList()[i]);
-                              mac = students.keys.toList()[i];
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 49,
-                margin: EdgeInsets.only(top: 21.0),
-                padding: EdgeInsets.only(
-                  top: 8,
-                  left: 16,
-                  right: 16,
-                  bottom: 4,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.redAccent),
-                ),
-                child: TextField(
-                  controller: checkInTimeInput,
-                  onTap: () {
-                    selectTime(context);
-                  },
-                  readOnly: true,
-                  decoration: InputDecoration(
-                      hintText: "Check In Time",
-                      prefixIcon:
-                          FaIcon(FontAwesomeIcons.clock, color: Colors.black),
-                      border: InputBorder.none),
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 1.2,
-                height: 49,
-                margin: EdgeInsets.only(top: 21.0),
-                padding: EdgeInsets.only(
-                  top: 8,
-                  left: 16,
-                  right: 16,
-                  bottom: 4,
-                ),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white,
-                  border: Border.all(color: Colors.redAccent),
-                ),
-                child: TextField(
-                  controller: checkOutTimeInput,
-                  onTap: () {
-                    selectTime2(context);
-                  },
-                  readOnly: true,
-                  decoration: InputDecoration(
-                      hintText: "Check Out Time",
-                      prefixIcon:
-                          FaIcon(FontAwesomeIcons.clock, color: Colors.black),
-                      border: InputBorder.none),
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ),
-              SizedBox(height: 18.0),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 28),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (checkInTimeInput.text.isNotEmpty ||
-                        checkOutTimeInput.text.isNotEmpty) {
-                      items.clear();
-                      markAttendance();
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "Please Select Times",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.black87,
-                        textColor: Colors.white,
-                        fontSize: 15.0,
-                      );
-                    }
-                    print(items);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.redAccent,
-                    elevation: 5.0,
-                    shape: const BeveledRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                    minimumSize: Size.fromHeight(50.0),
-                  ),
-                  child: Text(
-                    "Mark Attendance",
+                  child: TextField(
+                    controller: dateInput,
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2030));
+
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('dd MMMM yyyy').format(pickedDate);
+                        print(formattedDate);
+
+                        setState(() {
+                          dateInput.text =
+                              formattedDate; //set output date to TextField value.
+                        });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                    readOnly: true,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      hintText: "Select Date",
+                      border: InputBorder.none,
+                      prefixIcon:
+                          Icon(Icons.calendar_today, color: Colors.black),
                     ),
                   ),
                 ),
-              )
-            ],
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    height: 49,
+                    margin: EdgeInsets.only(top: 21.0),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 7),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.redAccent),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.person),
+                        SizedBox(width: 15.0),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                            elevation: 2,
+                            value: selectedValue,
+                            items: items.map((String items) {
+                              return DropdownMenuItem(
+                                  child: Text(items,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  value: items);
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedValue = newValue!;
+                                print(selectedValue);
+                                var i = students.values
+                                    .toList()
+                                    .indexOf(selectedValue);
+                                print(students.keys.toList()[i]);
+                                mac = students.keys.toList()[i];
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  height: 49,
+                  margin: EdgeInsets.only(top: 21.0),
+                  padding: EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                    bottom: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.redAccent),
+                  ),
+                  child: TextField(
+                    controller: checkInTimeInput,
+                    onTap: () {
+                      selectTime(context);
+                    },
+                    readOnly: true,
+                    decoration: InputDecoration(
+                        hintText: "Check In Time",
+                        prefixIcon:
+                            FaIcon(FontAwesomeIcons.clock, color: Colors.black),
+                        border: InputBorder.none),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  height: 49,
+                  margin: EdgeInsets.only(top: 21.0),
+                  padding: EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                    bottom: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.redAccent),
+                  ),
+                  child: TextField(
+                    controller: checkOutTimeInput,
+                    onTap: () {
+                      selectTime2(context);
+                    },
+                    readOnly: true,
+                    decoration: InputDecoration(
+                        hintText: "Check Out Time",
+                        prefixIcon:
+                            FaIcon(FontAwesomeIcons.clock, color: Colors.black),
+                        border: InputBorder.none),
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                SizedBox(height: 18.0),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 28),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (checkInTimeInput.text.isNotEmpty ||
+                          checkOutTimeInput.text.isNotEmpty) {
+                        items.clear();
+                        markAttendance();
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "Please Select Times",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.black87,
+                          textColor: Colors.white,
+                          fontSize: 15.0,
+                        );
+                      }
+                      print(items);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      elevation: 5.0,
+                      shape: const BeveledRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      minimumSize: Size.fromHeight(50.0),
+                    ),
+                    child: Text(
+                      "Mark Attendance",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -344,7 +349,6 @@ class _ManualAttendaceState extends State<ManualAttendace> {
       fontSize: 15.0,
     );
     dateInput.clear();
-    selectedValue = "Select Student";
     checkInTimeInput.clear();
     checkOutTimeInput.clear();
 

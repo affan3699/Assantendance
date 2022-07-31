@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2.5,
+                height: MediaQuery.of(context).size.height / 2.0,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -106,7 +106,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height / 1.6, // This One
+                height: MediaQuery.of(context).size.height / 1.1, // This One
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   children: <Widget>[
