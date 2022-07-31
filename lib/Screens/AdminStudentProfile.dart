@@ -1,3 +1,4 @@
+import 'package:assantendance/Screens/AdminViewAttendanceChart.dart';
 import 'package:assantendance/widgets/Card_Info.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -89,7 +90,7 @@ class _AdminStudentProfile extends State<AdminStudentProfile> {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                AdminViewAttendance(widget.mac)));
+                                AdminViewAttendanceChart(widget.mac)));
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.black54,

@@ -29,10 +29,7 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
   List<String> checkIn = <String>[];
   List<String> checkOut = <String>[];
   bool flag = true;
-  Map<String, double> dataMap = {
-    "Absent": 10,
-    "Present": 80,
-  };
+  Map<String, double> dataMap = {};
 
   @override
   void initState() {
@@ -41,6 +38,8 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
     getData().whenComplete(() => setState(() {
           flag = false;
         }));
+    dataMap['Absent'] = 80.0;
+    dataMap['Present'] = 20.0;
   }
 
   @override
@@ -90,73 +89,6 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                       ),
                     ],
                   ),
-                  Container(
-                    color: Colors.white,
-                    height: 300,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        PieChart(
-                          dataMap: dataMap,
-                          animationDuration: Duration(milliseconds: 900),
-                          chartLegendSpacing: 32,
-                          chartRadius: MediaQuery.of(context).size.width / 2.5,
-                          initialAngleInDegree: 0,
-                          chartType: ChartType.ring,
-                          centerText: '75.1%',
-                          centerTextStyle: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25.0),
-                          legendOptions: LegendOptions(
-                            showLegendsInRow: false,
-                            legendPosition: LegendPosition.left,
-                            showLegends: true,
-                            legendTextStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          chartValuesOptions: ChartValuesOptions(
-                            showChartValueBackground: false,
-                            showChartValues: false,
-                            showChartValuesInPercentage: false,
-                            showChartValuesOutside: true,
-                            decimalPlaces: 1,
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 13),
-                          padding: const EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15.0),
-                            color: Colors.redAccent.shade100,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Icon(
-                                Icons.dangerous,
-                                color: Colors.black,
-                                size: 22,
-                              ),
-                              SizedBox(
-                                width: 30,
-                              ),
-                              Expanded(
-                                child: Text("The Student is Short by 10%.",
-                                    style: TextStyle(
-                                      fontFamily: 'Roboto',
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                    )),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 20.0),
                   FirebaseAnimatedList(
                     key: _key,
                     physics: BouncingScrollPhysics(),
@@ -173,6 +105,7 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                         checkIn.add(data['CheckIn']);
                         checkOut.add(data['CheckOut']);
                       }
+
                       //print(getMonth);
                       //print(data);
                       //print(macAddress1);
@@ -280,14 +213,13 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                     child: ElevatedButton(
                       onPressed: () {
                         generateReport();
-                        print('Total = ' + dates.length.toString());
                       },
                       style: ElevatedButton.styleFrom(
                         primary: Colors.redAccent,
                         elevation: 5.0,
                         shape: const BeveledRectangleBorder(
                             borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
+                                BorderRadius.all(Radius.circular(6.0))),
                         minimumSize: Size.fromHeight(50.0),
                       ),
                       child: Text(
