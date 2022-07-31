@@ -16,12 +16,6 @@ class NavigationDrawer extends StatelessWidget {
           _createHeader(),
           Divider(color: Colors.black),
           _createDrawerItem(
-            onTap: () {},
-            icon: Icons.dashboard,
-            text: 'Overview',
-          ),
-          Divider(color: Colors.black),
-          _createDrawerItem(
             onTap: () {
               Navigator.pop(context);
               Navigator.push(context,

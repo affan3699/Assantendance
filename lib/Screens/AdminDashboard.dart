@@ -1,6 +1,7 @@
 import 'package:assantendance/Screens/Drawer.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_widget/flutter_calendar_widget.dart';
 
 import 'Welcome.dart';
 
@@ -41,6 +42,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
           ],
         ),
         drawer: NavigationDrawer(),
+        body: FlutterCalendar(
+          selectionMode: CalendarSelectionMode.single,
+          scrollPhysics: BouncingScrollPhysics(),
+          isHeaderDisplayed: true,
+          style: CalendarStyle(
+              markerColor: Colors.red,
+              rangeLineColor: Colors.red,
+              calenderPadding: EdgeInsets.all(5)),
+          textStyle: const CalendarTextStyle(
+            dayFontSize: 20,
+            dayOfWeekFontSize: 20,
+          ),
+          onDayPressed: (DateTime date) {
+            print(date);
+          },
+        ),
       ),
     );
   }

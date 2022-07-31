@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:assantendance/api/pdf_invoice_api2.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,8 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
   List<String> dates = <String>[];
   List<String> checkIn = <String>[];
   List<String> checkOut = <String>[];
-  bool flag = true;
+  List<String> months = <String>[];
+  bool flag = true, checkBox = false;
   Map<String, double> dataMap = {};
 
   @override
@@ -48,6 +50,7 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
     dates.clear();
     checkIn.clear();
     checkOut.clear();
+    months.clear();
 
     return Scaffold(
       appBar: AppBar(
@@ -89,6 +92,46 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                       ),
                     ],
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 28),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        generateReport();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.redAccent,
+                        elevation: 5.0,
+                        shape: const BeveledRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(6.0))),
+                        minimumSize: Size.fromHeight(50.0),
+                      ),
+                      child: Text(
+                        "Generate Report",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Yearly Report',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                      Checkbox(
+                        value: checkBox,
+                        onChanged: (value) {
+                          setState(() {
+                            checkBox = !checkBox;
+                          });
+                        },
+                        fillColor: MaterialStateProperty.all(Colors.red),
+                      ),
+                    ],
+                  ),
                   FirebaseAnimatedList(
                     key: _key,
                     physics: BouncingScrollPhysics(),
@@ -100,10 +143,19 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                       final data2 = snapshot.key as dynamic; // Days
 
                       String getMonth = data2.toString().split(" ")[1];
-                      if (getMonth == month) {
+
+                      if (checkBox == false) {
+                        if (getMonth == month) {
+                          dates.add(data2);
+                          checkIn.add(data['CheckIn']);
+                          checkOut.add(data['CheckOut']);
+                        }
+                      } else {
+                        months.add(getMonth);
                         dates.add(data2);
                         checkIn.add(data['CheckIn']);
                         checkOut.add(data['CheckOut']);
+                        print(months);
                       }
 
                       //print(getMonth);
@@ -208,29 +260,6 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
                     },
                   ),
                   SizedBox(height: 18.0),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 28),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        generateReport();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.redAccent,
-                        elevation: 5.0,
-                        shape: const BeveledRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(6.0))),
-                        minimumSize: Size.fromHeight(50.0),
-                      ),
-                      child: Text(
-                        "Generate Report",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             )
@@ -274,9 +303,13 @@ class _AdminViewAttendance extends State<AdminViewAttendance> {
     // print("PDF ka data = " + date.toString());
 
     //print(dates);
-
-    final pdfFile =
-        await PdfInvoiceApi.generate(month, dates, checkIn, checkOut);
+    final pdfFile;
+    if (checkBox == true) {
+      pdfFile = await PdfInvoiceApi2.generate(
+          months.toSet().toList(), dates, checkIn, checkOut);
+    } else {
+      pdfFile = await PdfInvoiceApi.generate(month, dates, checkIn, checkOut);
+    }
 
     PdfApi.openFile(pdfFile);
   }

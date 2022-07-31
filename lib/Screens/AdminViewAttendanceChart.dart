@@ -55,6 +55,7 @@ class _AdminViewAttendanceChartState extends State<AdminViewAttendanceChart> {
               margin: EdgeInsets.all(15.0),
               decoration: BoxDecoration(
                 color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black26,
@@ -86,6 +87,7 @@ class _AdminViewAttendanceChartState extends State<AdminViewAttendanceChart> {
                       showLegendsInRow: false,
                       legendPosition: LegendPosition.right,
                       showLegends: true,
+                      legendShape: BoxShape.rectangle,
                       legendTextStyle: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

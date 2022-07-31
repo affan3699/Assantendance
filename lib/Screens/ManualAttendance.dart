@@ -343,6 +343,11 @@ class _ManualAttendaceState extends State<ManualAttendace> {
       textColor: Colors.white,
       fontSize: 15.0,
     );
+    dateInput.clear();
+    selectedValue = "Select Student";
+    checkInTimeInput.clear();
+    checkOutTimeInput.clear();
+
     //print(data.toString());
   }
 }
