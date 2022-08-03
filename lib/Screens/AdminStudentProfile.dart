@@ -122,18 +122,20 @@ class _AdminStudentProfile extends State<AdminStudentProfile> {
     DatabaseReference _databaseReference = FirebaseDatabase.instance.ref();
     final snapshot = await _databaseReference.get();
     //print(snapshot.value);
-    //print(macAddress);setState(() {
-    //         imageURL = data[macAddress]["URL"].toString();
-    //         email = data[macAddress]["Email"].toString();
-    //         name = data[macAddress]["Name"].toString();
-    //         semester = data[macAddress]["Semester"].toString();
-    //         phone = data[macAddress]["Phone"].toString();
-    //         brand = data[macAddress]["Brand"].toString();
-    //       });
+    print(macAddress);
 
     if (snapshot.exists) {
       final data = snapshot.value as dynamic;
       print("DATA = " + data.toString());
+
+      setState(() {
+        imageURL = data[macAddress]["URL"].toString();
+        email = data[macAddress]["Email"].toString();
+        name = data[macAddress]["Name"].toString();
+        semester = data[macAddress]["Semester"].toString();
+        phone = data[macAddress]["Phone"].toString();
+        brand = data[macAddress]["Brand"].toString();
+      });
     } else {
       print('No data available.');
     }
