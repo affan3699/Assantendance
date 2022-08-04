@@ -26,7 +26,6 @@ class _AdminViewAttendanceChartState extends State<AdminViewAttendanceChart> {
   void initState() {
     super.initState();
     getAttendanceData().whenComplete(() => setState(() {}));
-    ;
   }
 
   @override

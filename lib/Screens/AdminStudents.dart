@@ -49,29 +49,32 @@ class _AdminStudentsState extends State<AdminStudents> {
                     margin: EdgeInsets.all(15.0),
                     child: ListTile(
                       title: Text(
-                        name['Name'],
+                        name['Name'] == null ? 'Not Registered' : name['Name'],
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(mac),
-                      trailing: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      AdminStudentProfile(mac)));
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateColor.resolveWith(
-                                (states) => Colors.redAccent),
-                            elevation: MaterialStateProperty.resolveWith(
-                                (states) => 2.0)),
-                        child: Text('Open'),
-                      ),
+                      trailing: name['Name'] != null
+                          ? ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AdminStudentProfile(mac)));
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateColor.resolveWith(
+                                          (states) => Colors.redAccent),
+                                  elevation: MaterialStateProperty.resolveWith(
+                                      (states) => 2.0)),
+                              child: Text('Open'),
+                            )
+                          : null,
                     ),
                   );
                 })
-            : Center(child: CircularProgressIndicator()),
+            : Center(child: CircularProgressIndicator(color: Colors.redAccent)),
       ),
     );
   }

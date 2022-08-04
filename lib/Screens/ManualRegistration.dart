@@ -15,16 +15,18 @@ import 'package:image_picker/image_picker.dart';
 import 'package:get_mac/get_mac.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
-class SignUp extends StatefulWidget {
+import 'Drawer.dart';
+
+class ManualRegistration extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _ManualRegistration createState() => _ManualRegistration();
 }
 
-class _SignUpState extends State<SignUp> {
+class _ManualRegistration extends State<ManualRegistration> {
   String email = "",
       password = "",
-      selectedValue = "Select Semester",
-      selectedValue2 = "Male",
+      selectedValue = "Select",
+      selectedValue2 = 'Select Gender',
       macAddress = "",
       phone = "",
       brand = "",
@@ -37,7 +39,7 @@ class _SignUpState extends State<SignUp> {
   void _imgFromCamera() async {
     PickedFile? pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
-      imageQuality: 20,
+      imageQuality: 12,
       preferredCameraDevice: CameraDevice.front,
     );
     if (pickedFile != null) {
@@ -49,16 +51,19 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _databaseReference = FirebaseDatabase.instance.ref();
-    initMacAddress();
-    getAndroidDeviceInfo();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Registration'),
+        centerTitle: true,
+        backgroundColor: Colors.redAccent,
+      ),
+      drawer: NavigationDrawer(),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Container(
@@ -67,28 +72,13 @@ class _SignUpState extends State<SignUp> {
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 2.0,
+                height: MediaQuery.of(context).size.height / 2.8,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      "Sign Up",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Set Up a Account",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
                     CircleAvatar(
                       radius: 64,
-                      backgroundColor: Colors.blueAccent,
+                      backgroundColor: Colors.black54,
                       backgroundImage:
                           imageFile != null ? FileImage(imageFile!) : null,
                     ),
@@ -97,17 +87,20 @@ class _SignUpState extends State<SignUp> {
                       icon: Icon(
                         Icons.image,
                         size: 24.0,
+                        color: Colors.redAccent,
                       ),
                       label: Text(
                         'Add Image',
-                        style: TextStyle(decoration: TextDecoration.underline),
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Colors.redAccent),
                       ),
                     ),
                   ],
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height / 1.1, // This One
+                height: MediaQuery.of(context).size.height / 1.0, // This One
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   children: <Widget>[
@@ -123,7 +116,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: TextField(
                         onChanged: (value) {
@@ -134,7 +127,7 @@ class _SignUpState extends State<SignUp> {
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.person_outline_sharp,
-                            color: Colors.blueAccent,
+                            color: Colors.redAccent,
                           ),
                           hintText: "Name",
                         ),
@@ -153,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: TextField(
                         onChanged: (value) {
@@ -163,7 +156,7 @@ class _SignUpState extends State<SignUp> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           icon: FaIcon(FontAwesomeIcons.envelope,
-                              color: Colors.blueAccent),
+                              color: Colors.redAccent),
                           hintText: "Email",
                         ),
                       ),
@@ -177,7 +170,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: TextField(
                         onChanged: (value) {
@@ -187,14 +180,17 @@ class _SignUpState extends State<SignUp> {
                         decoration: InputDecoration(
                           suffixIcon: InkWell(
                             onTap: togglePassword,
-                            child: Icon(isHiddenPassword == true
-                                ? Icons.visibility_off
-                                : Icons.visibility),
+                            child: Icon(
+                              isHiddenPassword == true
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Colors.redAccent,
+                            ),
                           ),
                           border: InputBorder.none,
                           icon: Icon(
                             Icons.vpn_key_outlined,
-                            color: Colors.blueAccent,
+                            color: Colors.redAccent,
                           ),
                           hintText: "Password",
                         ),
@@ -213,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: TextField(
                         onChanged: (value) {
@@ -222,8 +218,64 @@ class _SignUpState extends State<SignUp> {
                         keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                           border: InputBorder.none,
-                          icon: FaIcon(Icons.phone, color: Colors.blueAccent),
+                          icon: FaIcon(Icons.phone, color: Colors.redAccent),
                           hintText: "Phone No.",
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      height: 49,
+                      margin: EdgeInsets.only(top: 21.0),
+                      padding: EdgeInsets.only(
+                        top: 4,
+                        left: 16,
+                        right: 16,
+                        bottom: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.redAccent),
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          macAddress = value;
+                        },
+                        maxLength: 17,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          icon: FaIcon(Icons.wifi, color: Colors.redAccent),
+                          hintText: "MAC Address",
+                          counterText: "",
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width / 1.2,
+                      height: 49,
+                      margin: EdgeInsets.only(top: 21.0),
+                      padding: EdgeInsets.only(
+                        top: 4,
+                        left: 16,
+                        right: 16,
+                        bottom: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.redAccent),
+                      ),
+                      child: TextField(
+                        onChanged: (value) {
+                          brand = value;
+                        },
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          icon: FaIcon(Icons.android, color: Colors.redAccent),
+                          hintText: "Brand of Device",
                         ),
                       ),
                     ),
@@ -236,11 +288,11 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.person, color: Colors.blueAccent),
+                          Icon(Icons.person, color: Colors.redAccent),
                           SizedBox(width: 15.0),
                           DropdownButtonHideUnderline(
                             child: DropdownButton(
@@ -248,7 +300,6 @@ class _SignUpState extends State<SignUp> {
                               items: dropdownItems2,
                               hint: Text("Select Gender"),
                               onChanged: (String? newValue) {
-                                print(newValue);
                                 setState(() {
                                   selectedValue2 = newValue!;
                                 });
@@ -267,11 +318,11 @@ class _SignUpState extends State<SignUp> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         color: Colors.white,
-                        border: Border.all(color: Colors.blueAccent),
+                        border: Border.all(color: Colors.redAccent),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.school_outlined, color: Colors.blueAccent),
+                          Icon(Icons.school_outlined, color: Colors.redAccent),
                           SizedBox(width: 15.0),
                           DropdownButtonHideUnderline(
                             child: DropdownButton(
@@ -297,12 +348,12 @@ class _SignUpState extends State<SignUp> {
                         height: 40,
                         width: MediaQuery.of(context).size.width / 1.2,
                         decoration: BoxDecoration(
-                            color: Colors.blueAccent,
+                            color: Colors.redAccent,
                             borderRadius:
-                                BorderRadius.all(Radius.circular(50))),
+                                BorderRadius.all(Radius.circular(15))),
                         child: Center(
                           child: Text(
-                            "SIGN UP",
+                            "Register",
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -310,28 +361,6 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 14),
-                    InkWell(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "Already Have An Account?",
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 15,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Login()));
-                      },
                     ),
                   ],
                 ),
@@ -350,6 +379,7 @@ class _SignUpState extends State<SignUp> {
         selectedValue2.isEmpty ||
         name.isEmpty ||
         phone.isEmpty ||
+        brand.isEmpty ||
         imageFile == null) {
       Fluttertoast.showToast(
         msg: "Fields cannot be Empty!",
@@ -363,6 +393,16 @@ class _SignUpState extends State<SignUp> {
     } else if (!email.contains('@')) {
       Fluttertoast.showToast(
         msg: "Invalid Email!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 15.0,
+      );
+    } else if (macAddress.length < 17) {
+      Fluttertoast.showToast(
+        msg: "Invalid MAC Address",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
@@ -389,7 +429,7 @@ class _SignUpState extends State<SignUp> {
 
         final imageURL = await ref.getDownloadURL();
 
-        _databaseReference.child(macAddress).set({
+        _databaseReference.child(macAddress.toUpperCase()).set({
           "Name": name,
           "Email": email,
           "Phone": phone,
@@ -403,7 +443,7 @@ class _SignUpState extends State<SignUp> {
         _databaseReference.child("LeaveRequests").set({});
 
         Fluttertoast.showToast(
-          msg: "You are Successfully Registered!",
+          msg: "User is Successfully Registered!",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -411,7 +451,6 @@ class _SignUpState extends State<SignUp> {
           textColor: Colors.white,
           fontSize: 15.0,
         );
-        Navigator.of(context).pop();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'email-already-in-use') {
           Fluttertoast.showToast(
@@ -467,30 +506,16 @@ class _SignUpState extends State<SignUp> {
       DropdownMenuItem(child: Text("6"), value: "6"),
       DropdownMenuItem(child: Text("7"), value: "7"),
       DropdownMenuItem(child: Text("8"), value: "8"),
-      DropdownMenuItem(
-          child: Text("Select Semester"), value: "Select Semester"),
+      DropdownMenuItem(child: Text("Select"), value: "Select"),
     ];
     return menuItems;
-  }
-
-  Future<void> initMacAddress() async {
-    try {
-      macAddress = await GetMac.macAddress;
-    } on PlatformException {
-      print("Error Getting MAC Address");
-    }
-  }
-
-  Future<void> getAndroidDeviceInfo() async {
-    final deviceInfo = DeviceInfoPlugin();
-    androidDeviceInfo = await deviceInfo.androidInfo;
-    brand = androidDeviceInfo.brand + ' ' + androidDeviceInfo.device;
   }
 
   List<DropdownMenuItem<String>> get dropdownItems2 {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(child: Text("Male"), value: "Male"),
       DropdownMenuItem(child: Text("Female"), value: "Female"),
+      DropdownMenuItem(child: Text("Select Gender"), value: "Select Gender"),
     ];
     return menuItems;
   }

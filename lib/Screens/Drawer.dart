@@ -1,3 +1,5 @@
+import 'package:assantendance/Screens/AdminDashboard.dart';
+import 'package:assantendance/Screens/ManualRegistration.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -14,6 +16,16 @@ class NavigationDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           _createHeader(),
+          Divider(color: Colors.black),
+          _createDrawerItem(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AdminDashboard()));
+            },
+            icon: Icons.summarize,
+            text: 'Overview',
+          ),
           Divider(color: Colors.black),
           _createDrawerItem(
             onTap: () {
@@ -45,6 +57,18 @@ class NavigationDrawer extends StatelessWidget {
             },
             icon: Icons.note,
             text: 'Manual Attendance',
+          ),
+          Divider(color: Colors.black),
+          _createDrawerItem(
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ManualRegistration()));
+            },
+            icon: Icons.app_registration,
+            text: 'Manual Resgistration',
           ),
           Divider(color: Colors.black),
         ],
