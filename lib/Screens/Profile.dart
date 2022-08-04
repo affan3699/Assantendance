@@ -78,7 +78,8 @@ class _ProfileState extends State<Profile> {
                 CardInfo(text: email, icon: Icons.email),
                 CardInfo(text: "Semester $semester", icon: Icons.school),
                 CardInfo(text: phone, icon: Icons.phone_android),
-                CardInfo(text: brand, icon: Icons.info)
+                CardInfo(text: brand, icon: Icons.info),
+                CardInfo(text: macAddress, icon: Icons.wifi)
               ],
             ),
           ),

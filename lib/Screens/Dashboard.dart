@@ -1,12 +1,17 @@
 import 'package:assantendance/Screens/MarkAttendance.dart';
 import 'package:assantendance/Screens/Profile.dart';
 import 'package:assantendance/Screens/ViewAttendance.dart';
+import 'package:assantendance/Screens/ViewAttendanceChart.dart';
 import 'package:assantendance/Screens/Welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get_mac/get_mac.dart';
 
 import 'LeaveRequest.dart';
+
+String macAddress = "";
 
 class Dashboard extends StatelessWidget {
   @override
@@ -80,8 +85,11 @@ Card makeDashboardItem(
           onTap: () async {
             switch (item) {
               case 0:
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewAttendance()));
+                initMacAddress();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewAttendanceChart(macAddress)));
                 break;
 
               case 1:
@@ -137,5 +145,14 @@ void onSelected(BuildContext context, int item) async {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Profile()));
       break;
+  }
+}
+
+Future<void> initMacAddress() async {
+  try {
+    macAddress = await GetMac.macAddress;
+    print(macAddress);
+  } on PlatformException {
+    print("Error Getting MAC Address");
   }
 }
