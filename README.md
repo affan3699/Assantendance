@@ -1,20 +1,20 @@
 # Assantendance
 
-Our Final Year Project is in the development stage. An Attendance app for viewing attendance using Flutter and Firebase. Raspberry Pi will be used for marking attendance.
+Our Final Year Project is in the development stage. An Attendance app for viewing attendance using Flutter and Firebase. Raspberry Pi has been used for marking attendance.
 
 # Screenshots
 <div>
-<img src="images/loading.png" alt="phone image" width="200px" />
-<img src="images/login.png" alt="phone image" width="200px" />
-<img src="images/forgotpw.png" alt="phone image" width="200px" />
-<img src="images/home.png" alt="phone image" width="200px" />
-<img src="images/staff_view.png" alt="phone image" width="200px" />
-<img src="images/view.png" alt="phone image" width="200px" />
-<img src="images/mark.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_7.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_1.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_5.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_8.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_2.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_10.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_3.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_4.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_9.png" alt="phone image" width="200px" />
+<img src="Images/screenshot_6.png" alt="phone image" width="200px" />
 </div>
-
-# Contributions
-Contributions are welcome. Please read the [contributions guide](CONTRIBUTING.md) for more information.
 
 ## Getting Started
 
